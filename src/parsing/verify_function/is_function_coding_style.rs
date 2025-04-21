@@ -10,11 +10,14 @@ fn execute_coding_style_check() -> io::Result<()> {
         .stderr(Stdio::null())
         .output()?;
 
-    if output.status.success() {
-        println!("{}", "Coding style check completed successfully.".green());
-    } else {
+    if !output.status.success() {
         eprintln!("Coding style check failed.");
+        return Err(io::Error::new(
+            io::ErrorKind::Other,
+            "Coding style check failed.",
+        ));
     }
+
     Ok(())
 }
 
@@ -40,6 +43,10 @@ pub fn exec_cs() -> io::Result<()> {
             "The given function cannot be evaluated because it does not respect banana style coding."
                 .red()
         );
+        return Err(io::Error::new(
+            io::ErrorKind::Other,
+            "The given function cannot be evaluated because it does not respect banana style coding.",
+        ));
     }
     Ok(())
 }
