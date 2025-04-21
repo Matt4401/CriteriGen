@@ -28,6 +28,13 @@ fn is_file_empty(file_path: &str) -> Option<bool> {
     }
 }
 
+fn delete_file(file_path: &str) -> io::Result<()> {
+    if fs::remove_file(file_path).is_err() {
+        return Ok(());
+    }
+    Ok(())
+}
+
 pub fn exec_cs() -> io::Result<()> {
     if let Err(error) = execute_coding_style_check() {
         eprintln!(
@@ -48,5 +55,6 @@ pub fn exec_cs() -> io::Result<()> {
             "The given function cannot be evaluated because it does not respect banana style coding.",
         ));
     }
+    delete_file(file_path)?;
     Ok(())
 }
